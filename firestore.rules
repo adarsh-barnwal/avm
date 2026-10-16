@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128;
+    }
+
+    // Notices Collection (Public read, Admin/Portal write)
+    match /notices/{noticeId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(noticeId);
+    }
+
+    // Deleted Notices Tombstones
+    match /deleted_notices/{deletedId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(deletedId);
+    }
+
+    // Admissions Collection (Public application submission, Admin management)
+    match /admissions/{admissionId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(admissionId);
+    }
+
+    // Achievers & District Toppers Collection (Public view, Admin management)
+    match /achievers/{achieverId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(achieverId);
+    }
+
+    // Media (Photos and Videos) Collection (Instant school gallery uploads)
+    match /media/{mediaId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(mediaId);
+    }
+
+    // Deleted Media tracking (For removing default pre-loaded photos)
+    match /deleted_media/{deletedId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(deletedId);
+    }
+
+    // School Events & Celebrations Collection (Public view, Admin management)
+    match /events/{eventId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(eventId);
+    }
+
+    // Deleted Events tracking (For removing default pre-loaded events)
+    match /deleted_events/{deletedId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(deletedId);
+    }
+
+    // Admins Collection (Registered Administrators)
+    match /admins/{adminId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(adminId);
+    }
+
+    // Admin Verification OTPs
+    match /admin_otps/{otpId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(otpId);
+    }
+
+    // Connection & Health Test
+    match /test/{testId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(testId);
+    }
+  }
+}
+

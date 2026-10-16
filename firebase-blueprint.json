@@ -1,0 +1,134 @@
+{
+  "entities": {
+    "Notice": {
+      "title": "Notice",
+      "description": "School notices, announcements, and circulars",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 300, "description": "Notice headline" },
+        "category": { "type": "string", "enum": ["Admissions", "Academics", "Sports", "Circular", "Events"], "description": "Notice category" },
+        "date": { "type": "string", "maxLength": 50, "description": "Display date or session" },
+        "isNew": { "type": "boolean", "description": "Highlight as new" },
+        "details": { "type": "string", "maxLength": 2000, "description": "Detailed description" },
+        "downloadable": { "type": "boolean", "description": "Whether attachment is available" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["title", "category", "details"]
+    },
+    "Admission": {
+      "title": "Admission",
+      "description": "Online admission applications submitted by parents",
+      "type": "object",
+      "properties": {
+        "studentName": { "type": "string", "maxLength": 150, "description": "Name of student" },
+        "parentName": { "type": "string", "maxLength": 150, "description": "Name of parent/guardian" },
+        "phone": { "type": "string", "maxLength": 25, "description": "Contact number" },
+        "classGrade": { "type": "string", "maxLength": 50, "description": "Class applied for" },
+        "stream": { "type": "string", "maxLength": 50, "description": "Stream for 11th/12th" },
+        "village": { "type": "string", "maxLength": 200, "description": "Village or address" },
+        "needBus": { "type": "boolean", "description": "Bus transport requested" },
+        "status": { "type": "string", "enum": ["New", "Contacted", "Admitted"], "description": "Status" },
+        "createdAt": { "type": "string", "description": "Submission timestamp" }
+      },
+      "required": ["studentName", "parentName", "phone", "classGrade"]
+    },
+    "Achiever": {
+      "title": "Achiever",
+      "description": "Board district toppers and athletic champions",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 150, "description": "Student name" },
+        "title": { "type": "string", "maxLength": 200, "description": "Achievement title" },
+        "scoreOrAward": { "type": "string", "maxLength": 100, "description": "Percentage or award" },
+        "category": { "type": "string", "enum": ["Board Topper", "Sports", "Merit"], "description": "Achievement category" },
+        "year": { "type": "string", "maxLength": 30, "description": "Session or year" },
+        "imageUrl": { "type": "string", "maxLength": 500, "description": "Photo URL" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["name", "title", "category"]
+    },
+    "MediaItem": {
+      "title": "MediaItem",
+      "description": "Photos and videos uploaded or linked for school gallery",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200, "description": "Media title" },
+        "type": { "type": "string", "enum": ["photo", "video"], "description": "Type of media" },
+        "mediaUrl": { "type": "string", "maxLength": 800000, "description": "Base64 image data URL or web link or YouTube link" },
+        "category": { "type": "string", "enum": ["Campus", "Sports", "Toppers", "Celebrations", "AnnualDay"], "description": "Gallery category" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["title", "type", "mediaUrl", "category"]
+    },
+    "SchoolEvent": {
+      "title": "SchoolEvent",
+      "description": "Upcoming and past school celebrations and events",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 250, "description": "Event name" },
+        "date": { "type": "string", "maxLength": 50, "description": "Event date" },
+        "venue": { "type": "string", "maxLength": 150, "description": "Venue or hall" },
+        "description": { "type": "string", "maxLength": 2000, "description": "Event details" },
+        "category": { "type": "string", "enum": ["Academic", "Sports", "Cultural", "Celebration"], "description": "Event category" },
+        "status": { "type": "string", "enum": ["Upcoming", "Completed"], "description": "Event status" },
+        "bannerUrl": { "type": "string", "maxLength": 1000, "description": "Optional banner image URL" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["title", "date", "description", "status"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Registered school administrators",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string", "maxLength": 50, "description": "Login username" },
+        "fullName": { "type": "string", "maxLength": 100, "description": "Full name" },
+        "email": { "type": "string", "maxLength": 100, "description": "Admin email" },
+        "password": { "type": "string", "maxLength": 100, "description": "Password" },
+        "role": { "type": "string", "description": "Role" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["username", "email", "password"]
+    },
+    "DeletedMedia": {
+      "title": "DeletedMedia",
+      "description": "Tombstones for deleted preloaded media items",
+      "type": "object",
+      "properties": {
+        "mediaId": { "type": "string", "maxLength": 100, "description": "Target media ID" },
+        "deletedAt": { "type": "string", "description": "Deletion timestamp" }
+      },
+      "required": ["mediaId"]
+    }
+  },
+  "firestore": {
+    "/notices/{noticeId}": {
+      "schema": "Notice",
+      "description": "Official school notices and announcements"
+    },
+    "/admissions/{admissionId}": {
+      "schema": "Admission",
+      "description": "Inward admission registration applications"
+    },
+    "/achievers/{achieverId}": {
+      "schema": "Achiever",
+      "description": "District toppers and champions"
+    },
+    "/media/{mediaId}": {
+      "schema": "MediaItem",
+      "description": "Gallery photos and videos"
+    },
+    "/deleted_media/{deletedId}": {
+      "schema": "DeletedMedia",
+      "description": "Deleted or hidden gallery media records"
+    },
+    "/events/{eventId}": {
+      "schema": "SchoolEvent",
+      "description": "School events and celebrations"
+    },
+    "/admins/{adminId}": {
+      "schema": "AdminUser",
+      "description": "Registered school administrators"
+    }
+  }
+}
